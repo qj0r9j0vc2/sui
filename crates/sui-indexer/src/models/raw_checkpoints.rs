@@ -19,8 +19,8 @@ impl From<&IndexedCheckpoint> for StoredRawCheckpoint {
     fn from(c: &IndexedCheckpoint) -> Self {
         Self {
             sequence_number: c.sequence_number as i64,
-            certified_checkpoint: bcs::to_bytes(c.certified_checkpoint.as_ref().unwrap()).unwrap(),
-            checkpoint_contents: bcs::to_bytes(c.checkpoint_contents.as_ref().unwrap()).unwrap(),
+            certified_checkpoint: bcs::to_bytes(&c.certified_checkpoint).unwrap(),
+            checkpoint_contents: bcs::to_bytes(&c.checkpoint_contents).unwrap(),
         }
     }
 }
