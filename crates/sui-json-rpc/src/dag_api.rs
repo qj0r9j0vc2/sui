@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use jsonrpsee::core::RpcResult;
 use jsonrpsee::RpcModule;
 use parking_lot::RwLock;
+use arc_swap::ArcSwapOption;
 use consensus_core::DagState;
 use sui_open_rpc::Module;
 use sui_json_rpc_api::{DagReadApiOpenRpc, DagReadApiServer, JsonRpcMetrics};
@@ -13,13 +14,20 @@ use crate::{with_tracing, SuiRpcModule, error::Error};
 
 #[derive(Clone)]
 pub struct DagReadApi {
-    dag_state: Option<Arc<RwLock<DagState>>>,
+    dag_state: Arc<ArcSwapOption<RwLock<DagState>>>,
     _metrics: Arc<JsonRpcMetrics>,
 }
 
 impl DagReadApi {
     pub fn new(dag_state: Option<Arc<RwLock<DagState>>>, metrics: Arc<JsonRpcMetrics>) -> Self {
-        Self { dag_state, _metrics: metrics }
+        Self {
+            dag_state: Arc::new(ArcSwapOption::from(dag_state)),
+            _metrics: metrics,
+        }
+    }
+
+    pub fn set_dag_state(&self, dag_state: Arc<RwLock<DagState>>) {
+        self.dag_state.store(Some(dag_state));
     }
 }
 
@@ -27,7 +35,7 @@ impl DagReadApi {
 impl DagReadApiServer for DagReadApi {
     async fn get_latest_dag_blocks(&self, num_rounds: Option<u64>) -> RpcResult<Vec<SuiDagBlock>> {
         with_tracing!(async move {
-            let Some(ds) = &self.dag_state else {
+            let Some(ds) = self.dag_state.load_full() else {
                 return Err(Error::UnsupportedFeature("DAG state unavailable".to_string()).into());
             };
             let num_rounds = num_rounds.unwrap_or(5);

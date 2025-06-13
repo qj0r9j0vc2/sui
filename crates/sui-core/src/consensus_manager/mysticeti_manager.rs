@@ -6,7 +6,7 @@ use arc_swap::ArcSwapOption;
 use async_trait::async_trait;
 use consensus_config::{Committee, NetworkKeyPair, Parameters, ProtocolKeyPair};
 use consensus_core::{
-    Clock, CommitConsumer, CommitConsumerMonitor, CommitIndex, ConsensusAuthority,
+    Clock, CommitConsumer, CommitConsumerMonitor, CommitIndex, ConsensusAuthority, DagState,
 };
 use fastcrypto::ed25519;
 use mysten_metrics::{RegistryID, RegistryService};
@@ -18,6 +18,7 @@ use sui_types::{
 };
 use tokio::sync::Mutex;
 use tracing::info;
+use parking_lot::RwLock;
 
 use crate::{
     authority::authority_per_epoch_store::AuthorityPerEpochStore,
@@ -101,6 +102,12 @@ impl MysticetiManager {
             }
         }
         epoch_store.protocol_config().consensus_network()
+    }
+
+    pub fn dag_state(&self) -> Option<Arc<RwLock<DagState>>> {
+        self.authority
+            .load_full()
+            .map(|a| a.0.dag_state())
     }
 }
 

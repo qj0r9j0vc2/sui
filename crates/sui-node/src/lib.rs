@@ -278,6 +278,7 @@ pub struct SuiNode {
     auth_agg: Arc<ArcSwap<AuthorityAggregator<NetworkAuthorityClient>>>,
 
     subscription_service_checkpoint_sender: Option<tokio::sync::mpsc::Sender<CheckpointData>>,
+    dag_api: Arc<DagReadApi>,
 }
 
 impl fmt::Debug for SuiNode {
@@ -799,7 +800,7 @@ impl SuiNode {
             None
         };
 
-        let (http_servers, subscription_service_checkpoint_sender) = build_http_servers(
+        let (http_servers, subscription_service_checkpoint_sender, dag_api) = build_http_servers(
             state.clone(),
             state_sync_store,
             &transaction_orchestrator.clone(),
@@ -861,6 +862,7 @@ impl SuiNode {
                     connection_monitor_status.clone(),
                     &registry_service,
                     sui_node_metrics.clone(),
+                    dag_api.clone(),
                 ),
                 Self::reexecute_pending_consensus_certs(&epoch_store, &state,)
             );
@@ -909,6 +911,7 @@ impl SuiNode {
 
             auth_agg,
             subscription_service_checkpoint_sender,
+            dag_api: dag_api.clone(),
         };
 
         info!("SuiNode started!");
@@ -1219,6 +1222,7 @@ impl SuiNode {
         connection_monitor_status: Arc<ConnectionMonitorStatus>,
         registry_service: &RegistryService,
         sui_node_metrics: Arc<SuiNodeMetrics>,
+        dag_api: Arc<DagReadApi>,
     ) -> Result<ValidatorComponents> {
         let mut config_clone = config.clone();
         let consensus_config = config_clone
@@ -1295,6 +1299,7 @@ impl SuiNode {
             checkpoint_metrics,
             sui_node_metrics,
             sui_tx_validator_metrics,
+            dag_api.clone(),
         )
         .await
     }
@@ -1316,6 +1321,7 @@ impl SuiNode {
         checkpoint_metrics: Arc<CheckpointMetrics>,
         sui_node_metrics: Arc<SuiNodeMetrics>,
         sui_tx_validator_metrics: Arc<SuiTxValidatorMetrics>,
+        dag_api: Arc<DagReadApi>,
     ) -> Result<ValidatorComponents> {
         let checkpoint_service = Self::build_checkpoint_service(
             config,
@@ -1398,6 +1404,9 @@ impl SuiNode {
                 ),
             )
             .await;
+        if let Some(ds) = consensus_manager.dag_state() {
+            dag_api.set_dag_state(ds);
+        }
         let consensus_replay_waiter = consensus_manager.replay_waiter();
 
         if !epoch_store
@@ -1931,6 +1940,7 @@ impl SuiNode {
                             checkpoint_metrics,
                             self.metrics.clone(),
                             sui_tx_validator_metrics,
+                            self.dag_api.clone(),
                         )
                         .await?,
                     )
@@ -1967,6 +1977,7 @@ impl SuiNode {
                         self.connection_monitor_status.clone(),
                         &self.registry_service,
                         self.metrics.clone(),
+                        self.dag_api.clone(),
                     )
                     .await?;
 
@@ -2213,14 +2224,18 @@ async fn build_http_servers(
 ) -> Result<(
     HttpServers,
     Option<tokio::sync::mpsc::Sender<CheckpointData>>,
+    Arc<DagReadApi>,
 )> {
     // Validators do not expose these APIs
     if config.consensus_config().is_some() {
-        return Ok((HttpServers::default(), None));
+        return Ok((HttpServers::default(), None, Arc::new(DagReadApi::new(None, Arc::new(JsonRpcMetrics::new(prometheus_registry))))));
     }
 
     let mut router = axum::Router::new();
 
+    let metrics = Arc::new(JsonRpcMetrics::new(prometheus_registry));
+    let dag_api = Arc::new(DagReadApi::new(None, metrics.clone()));
+    
     let json_rpc_router = {
         let mut server = JsonRpcServerBuilder::new(
             env!("CARGO_PKG_VERSION"),
@@ -2287,7 +2302,7 @@ async fn build_http_servers(
             config.indexer_max_subscriptions,
         ))?;
         server.register_module(MoveUtils::new(state.clone()))?;
-        server.register_module(DagReadApi::new(None, metrics.clone()))?;
+        server.register_module((*dag_api).clone())?;
 
         let server_type = config.jsonrpc_server_type();
 
@@ -2372,6 +2387,7 @@ async fn build_http_servers(
             https,
         },
         Some(subscription_service_checkpoint_sender),
+        dag_api,
     ))
 }
 

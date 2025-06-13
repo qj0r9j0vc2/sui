@@ -124,6 +124,13 @@ impl ConsensusAuthority {
         }
     }
 
+    pub fn dag_state(&self) -> Arc<RwLock<DagState>> {
+        match self {
+            Self::WithAnemo(authority) => authority.dag_state(),
+            Self::WithTonic(authority) => authority.dag_state(),
+        }
+    }
+
     pub async fn replay_complete(&self) {
         match self {
             Self::WithAnemo(authority) => authority.replay_complete().await,
@@ -167,6 +174,7 @@ where
     // if streaming is supported.
     broadcaster: Option<Broadcaster>,
     subscriber: Option<Subscriber<N::Client, AuthorityService<ChannelCoreThreadDispatcher>>>,
+    dag_state: Arc<RwLock<DagState>>,
     network_manager: N,
     sync_last_known_own_block: bool,
 }
@@ -398,7 +406,7 @@ where
                 context.clone(),
                 network_client,
                 network_service.clone(),
-                dag_state,
+                dag_state.clone(),
             );
             for (peer, _) in context.committee.authorities() {
                 if peer != context.own_index {
@@ -430,6 +438,7 @@ where
             core_thread_handle,
             broadcaster,
             subscriber,
+            dag_state,
             network_manager,
             sync_last_known_own_block,
         }
@@ -478,6 +487,10 @@ where
 
     pub(crate) fn transaction_client(&self) -> Arc<TransactionClient> {
         self.transaction_client.clone()
+    }
+    
+    pub(crate) fn dag_state(&self) -> Arc<RwLock<DagState>> {
+        self.dag_state.clone()
     }
 
     pub(crate) async fn replay_complete(&self) {
