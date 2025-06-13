@@ -66,6 +66,7 @@ pub use block::{BlockTimestampMs, TestBlock, Transaction, VerifiedBlock};
 pub use commit::{CommitDigest, CommitIndex, CommitRef, CommittedSubDag};
 pub use commit_consumer::{CommitConsumer, CommitConsumerMonitor};
 pub use context::Clock;
+pub use dag_state::DagState;
 pub use network::{
     connection_monitor::{AnemoConnectionMonitor, ConnectionMonitorHandle, ConnectionStatus},
     metrics::{MetricsMakeCallbackHandler, NetworkRouteMetrics, QuinnConnectionMetrics},
