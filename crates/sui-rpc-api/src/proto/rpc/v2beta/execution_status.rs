@@ -209,7 +209,10 @@ impl From<sui_sdk_types::ExecutionError> for super::ExecutionError {
                 });
                 ExecutionErrorKind::MoveRawValueTooBig
             }
+<<<<<<< HEAD
             InvalidLinkage => ExecutionErrorKind::InvalidLinkage,
+=======
+>>>>>>> mainnet-v1.49.2-dag
         };
 
         message.set_kind(kind);
@@ -393,6 +396,10 @@ impl TryFrom<&super::ExecutionError> for sui_sdk_types::ExecutionError {
             ExecutionCanceledDueToRandomnessUnavailable => {
                 Self::ExecutionCanceledDueToRandomnessUnavailable
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> mainnet-v1.49.2-dag
             MoveVectorElemTooBig => {
                 let super::SizeError { size, max_size } = value
                     .size_error
@@ -417,7 +424,10 @@ impl TryFrom<&super::ExecutionError> for sui_sdk_types::ExecutionError {
                         .ok_or_else(|| TryFromProtoError::missing("max_size"))?,
                 }
             }
+<<<<<<< HEAD
             InvalidLinkage => Self::InvalidLinkage,
+=======
+>>>>>>> mainnet-v1.49.2-dag
         }
         .pipe(Ok)
     }

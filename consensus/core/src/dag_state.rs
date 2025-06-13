@@ -10,7 +10,7 @@ use std::{
     vec,
 };
 
-use consensus_config::AuthorityIndex;
+use consensus_config::{AuthorityIndex, Committee};
 use itertools::Itertools as _;
 use tokio::time::Instant;
 use tracing::{debug, error, info, trace};
@@ -38,7 +38,7 @@ use crate::{
 ///
 /// Note: DagState should be wrapped with Arc<parking_lot::RwLock<_>>, to allow
 /// concurrent access from multiple components.
-pub(crate) struct DagState {
+pub struct DagState {
     context: Arc<Context>,
 
     // The genesis blocks
@@ -546,7 +546,7 @@ impl DagState {
 
     // Retrieves the cached block within the range [start_round, end_round) from a given authority,
     // limited in total number of blocks.
-    pub(crate) fn get_cached_blocks_in_range(
+    pub fn get_cached_blocks_in_range(
         &self,
         authority: AuthorityIndex,
         start_round: Round,
@@ -814,8 +814,13 @@ impl DagState {
         self.threshold_clock.get_quorum_ts()
     }
 
-    pub(crate) fn highest_accepted_round(&self) -> Round {
+    pub fn highest_accepted_round(&self) -> Round {
         self.highest_accepted_round
+    }
+
+      /// Returns a reference to the current committee.
+      pub fn committee(&self) -> &Committee {
+        &self.context.committee
     }
 
     // Buffers a new commit in memory and updates last committed rounds.

@@ -1981,7 +1981,11 @@ checksum = "230c5f1ca6a325a32553f8640d31ac9b49f2411e901e427570154868b46da4f7"
 
 [[package]]
 name = "bin-version"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "const-str",
  "git-version",
@@ -13056,7 +13060,11 @@ checksum = "734676eb262c623cec13c3155096e08d1f8f29adce39ba17948b18dad1e54142"
 
 [[package]]
 name = "sui"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anemo",
  "anyhow",
@@ -13279,7 +13287,11 @@ dependencies = [
 
 [[package]]
 name = "sui-analytics-indexer"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "arrow",
@@ -13334,7 +13346,11 @@ dependencies = [
 
 [[package]]
 name = "sui-analytics-indexer-derive"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "proc-macro2",
  "quote",
@@ -13435,7 +13451,11 @@ dependencies = [
 
 [[package]]
 name = "sui-bridge"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -13487,7 +13507,11 @@ dependencies = [
 
 [[package]]
 name = "sui-bridge-cli"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "clap",
@@ -13593,7 +13617,11 @@ dependencies = [
 
 [[package]]
 name = "sui-cluster-test"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -13816,7 +13844,11 @@ dependencies = [
 
 [[package]]
 name = "sui-data-ingestion"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -13911,7 +13943,11 @@ dependencies = [
 
 [[package]]
 name = "sui-default-config"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -13919,7 +13955,11 @@ dependencies = [
 
 [[package]]
 name = "sui-display"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "move-core-types",
@@ -13930,7 +13970,11 @@ dependencies = [
 
 [[package]]
 name = "sui-e2e-tests"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14077,7 +14121,11 @@ dependencies = [
 
 [[package]]
 name = "sui-faucet"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14106,14 +14154,22 @@ dependencies = [
 
 [[package]]
 name = "sui-field-count"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "sui-field-count-derive",
 ]
 
 [[package]]
 name = "sui-field-count-derive"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -14141,7 +14197,11 @@ dependencies = [
 
 [[package]]
 name = "sui-framework-snapshot"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bcs",
@@ -14205,6 +14265,49 @@ dependencies = [
 ]
 
 [[package]]
+<<<<<<< HEAD
+=======
+name = "sui-graphql-client"
+version = "0.0.4"
+source = "git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=4b66232a26a7ed888294f504b353951280b651b3#4b66232a26a7ed888294f504b353951280b651b3"
+dependencies = [
+ "anyhow",
+ "async-stream",
+ "async-trait",
+ "base64ct",
+ "bcs",
+ "chrono",
+ "cynic",
+ "futures",
+ "reqwest 0.12.9",
+ "serde",
+ "serde_json",
+ "sui-graphql-client-build 0.0.4 (git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=4b66232a26a7ed888294f504b353951280b651b3)",
+ "sui-sdk-types",
+ "thiserror 2.0.12",
+ "tokio",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "sui-graphql-client-build"
+version = "0.0.4"
+source = "git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=4b66232a26a7ed888294f504b353951280b651b3#4b66232a26a7ed888294f504b353951280b651b3"
+dependencies = [
+ "cynic-codegen",
+]
+
+[[package]]
+name = "sui-graphql-client-build"
+version = "0.0.4"
+source = "git+https://github.com/mystenlabs/sui-rust-sdk?rev=83ff809bc11cbabda21b60130e1f5420170548bf#83ff809bc11cbabda21b60130e1f5420170548bf"
+dependencies = [
+ "cynic-codegen",
+]
+
+[[package]]
+>>>>>>> mainnet-v1.49.2-dag
 name = "sui-graphql-e2e-tests"
 version = "0.1.0"
 dependencies = [
@@ -14221,7 +14324,11 @@ dependencies = [
 
 [[package]]
 name = "sui-graphql-rpc"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -14344,7 +14451,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14419,7 +14530,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14493,7 +14608,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-framework"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14534,7 +14653,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-framework-store-traits"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14544,7 +14667,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-graphql"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -14590,7 +14717,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-jsonrpc"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -14642,7 +14773,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-metrics"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "axum 0.8.3",
@@ -14656,7 +14791,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-reader"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -14713,7 +14852,11 @@ dependencies = [
 
 [[package]]
 name = "sui-indexer-alt-schema"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bcs",
@@ -14947,7 +15090,11 @@ dependencies = [
 
 [[package]]
 name = "sui-kvstore"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -14971,7 +15118,11 @@ dependencies = [
 
 [[package]]
 name = "sui-light-client"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -15014,7 +15165,11 @@ dependencies = [
 
 [[package]]
 name = "sui-metric-checker"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "backoff",
@@ -15052,7 +15207,11 @@ dependencies = [
 
 [[package]]
 name = "sui-move"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "better_any",
@@ -15095,7 +15254,11 @@ dependencies = [
 
 [[package]]
 name = "sui-move-build"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "fastcrypto",
@@ -15119,7 +15282,11 @@ dependencies = [
 
 [[package]]
 name = "sui-move-lsp"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "bin-version",
  "clap",
@@ -15212,7 +15379,11 @@ dependencies = [
 
 [[package]]
 name = "sui-name-service"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "bcs",
  "move-core-types",
@@ -15265,7 +15436,11 @@ dependencies = [
 
 [[package]]
 name = "sui-node"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anemo",
  "anemo-tower",
@@ -15321,7 +15496,11 @@ dependencies = [
 
 [[package]]
 name = "sui-open-rpc"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bcs",
@@ -15357,7 +15536,11 @@ dependencies = [
 
 [[package]]
 name = "sui-oracle"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bcs",
@@ -15387,7 +15570,11 @@ dependencies = [
 
 [[package]]
 name = "sui-package-alt"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "move-package-alt",
  "serde",
@@ -15395,7 +15582,11 @@ dependencies = [
 
 [[package]]
 name = "sui-package-dump"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bcs",
@@ -15412,7 +15603,11 @@ dependencies = [
 
 [[package]]
 name = "sui-package-management"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "move-core-types",
@@ -15453,7 +15648,11 @@ dependencies = [
 
 [[package]]
 name = "sui-pg-db"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -15629,6 +15828,12 @@ dependencies = [
  "similar",
  "sui-execution",
  "sui-framework",
+<<<<<<< HEAD
+=======
+ "sui-graphql-client",
+ "sui-graphql-client-build 0.0.4 (git+https://github.com/mystenlabs/sui-rust-sdk?rev=83ff809bc11cbabda21b60130e1f5420170548bf)",
+ "sui-sdk-types",
+>>>>>>> mainnet-v1.49.2-dag
  "sui-types",
  "telemetry-subscribers",
  "thiserror 1.0.69",
@@ -15638,7 +15843,11 @@ dependencies = [
 
 [[package]]
 name = "sui-rosetta"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -15732,7 +15941,11 @@ dependencies = [
 
 [[package]]
 name = "sui-rpc-benchmark"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "bb8",
@@ -15757,7 +15970,11 @@ dependencies = [
 
 [[package]]
 name = "sui-rpc-loadgen"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -15784,7 +16001,11 @@ dependencies = [
 
 [[package]]
 name = "sui-sdk"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -15825,7 +16046,11 @@ dependencies = [
 [[package]]
 name = "sui-sdk-types"
 version = "0.0.4"
+<<<<<<< HEAD
 source = "git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=b64827452de2e3f9e62ee8f3cb456a93c2b66b53#b64827452de2e3f9e62ee8f3cb456a93c2b66b53"
+=======
+source = "git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=4b66232a26a7ed888294f504b353951280b651b3#4b66232a26a7ed888294f504b353951280b651b3"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "base64ct",
  "bcs",
@@ -15846,7 +16071,11 @@ dependencies = [
 
 [[package]]
 name = "sui-security-watchdog"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "arrow-array",
@@ -15893,7 +16122,11 @@ dependencies = [
 
 [[package]]
 name = "sui-single-node-benchmark"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "async-trait",
  "bcs",
@@ -15956,7 +16189,11 @@ dependencies = [
 
 [[package]]
 name = "sui-source-validation"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "colored",
@@ -16026,7 +16263,11 @@ dependencies = [
 
 [[package]]
 name = "sui-sql-macro"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -16089,7 +16330,11 @@ dependencies = [
 
 [[package]]
 name = "sui-surfer"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "async-trait",
  "bcs",
@@ -16212,7 +16457,11 @@ dependencies = [
 
 [[package]]
 name = "sui-test-validator"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 
 [[package]]
 name = "sui-tls"
@@ -16238,7 +16487,11 @@ dependencies = [
 
 [[package]]
 name = "sui-tool"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anemo",
  "anemo-cli",
@@ -16527,7 +16780,11 @@ dependencies = [
 
 [[package]]
 name = "suins-indexer"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "async-trait",
@@ -19016,7 +19273,11 @@ dependencies = [
 
 [[package]]
 name = "x"
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 dependencies = [
  "anyhow",
  "camino",

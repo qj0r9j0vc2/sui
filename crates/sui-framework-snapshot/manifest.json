@@ -1831,6 +1831,7 @@
   },
   "84": {
     "git_revision": "25804c243d07",
+<<<<<<< HEAD
     "packages": [
       {
         "name": "MoveStdlib",
@@ -1861,6 +1862,8 @@
   },
   "85": {
     "git_revision": "af5297b292c3",
+=======
+>>>>>>> mainnet-v1.49.2-dag
     "packages": [
       {
         "name": "MoveStdlib",

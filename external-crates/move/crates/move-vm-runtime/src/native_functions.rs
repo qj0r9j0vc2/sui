@@ -158,6 +158,7 @@ impl<'b> NativeContext<'_, 'b> {
         }
     }
 
+<<<<<<< HEAD
     // TODO: This is a bit hacky right now since we need to pass the store, however this is only
     // used in test scenarios so we have some special knowledge that makes this work. In the new VM
     // however this is _MUCH_ nicer as we don't need to pass the datastore as the VM's linkage
@@ -190,6 +191,8 @@ impl<'b> NativeContext<'_, 'b> {
             .transpose()
     }
 
+=======
+>>>>>>> mainnet-v1.49.2-dag
     pub fn type_to_abilities(&self, ty: &Type) -> PartialVMResult<AbilitySet> {
         self.resolver.loader().abilities(ty)
     }

@@ -222,7 +222,11 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by sui-core, sui-faucet, sui-node, sui-tools, sui-sdk, sui-move-build, and sui crates.
+<<<<<<< HEAD
 version = "1.51.0"
+=======
+version = "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
 
 [profile.release]
 # debug = 1 means line charts only, which is minimum needed for good stack traces
@@ -648,10 +652,16 @@ anemo-cli = { git = "https://github.com/mystenlabs/anemo.git", rev = "9c52c3c794
 anemo-tower = { git = "https://github.com/mystenlabs/anemo.git", rev = "9c52c3c7946532163a79129db15180cdb984bab4" }
 
 # core-types from the new sdk for use in gRPC
+<<<<<<< HEAD
 sui-sdk-types = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "b64827452de2e3f9e62ee8f3cb456a93c2b66b53", features = [ "hash", "serde" ] }
 sui-crypto = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "b64827452de2e3f9e62ee8f3cb456a93c2b66b53", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
 sui-graphql-client = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "b64827452de2e3f9e62ee8f3cb456a93c2b66b53" }
 sui-graphql-client-build = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "b64827452de2e3f9e62ee8f3cb456a93c2b66b53" }
+=======
+sui-sdk-types = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "4b66232a26a7ed888294f504b353951280b651b3", features = [ "hash", "serde" ] }
+sui-graphql-client = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "4b66232a26a7ed888294f504b353951280b651b3" }
+sui-graphql-client-build = { git = "https://github.com/MystenLabs/sui-rust-sdk.git", rev = "4b66232a26a7ed888294f504b353951280b651b3" }
+>>>>>>> mainnet-v1.49.2-dag
 
 ### Workspace Members ###
 anemo-benchmark = { path = "crates/anemo-benchmark" }

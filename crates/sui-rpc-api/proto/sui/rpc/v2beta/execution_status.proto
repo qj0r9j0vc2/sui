@@ -166,8 +166,11 @@ message ExecutionError {
     MOVE_VECTOR_ELEM_TOO_BIG = 38;
 
     MOVE_RAW_VALUE_TOO_BIG = 39;
+<<<<<<< HEAD
 
     INVALID_LINKAGE = 40;
+=======
+>>>>>>> mainnet-v1.49.2-dag
   }
 
   optional ExecutionErrorKind kind = 2;

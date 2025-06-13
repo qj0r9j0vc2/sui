@@ -182,6 +182,7 @@ impl From<Owner> for crate::object::Owner {
                 initial_shared_version: initial_shared_version.into(),
             },
             Owner::Immutable => crate::object::Owner::Immutable,
+<<<<<<< HEAD
             Owner::ConsensusAddress {
                 start_version,
                 owner,
@@ -189,6 +190,9 @@ impl From<Owner> for crate::object::Owner {
                 start_version: start_version.into(),
                 owner: owner.into(),
             },
+=======
+            Owner::ConsensusAddress { .. } => todo!(),
+>>>>>>> mainnet-v1.49.2-dag
         }
     }
 }
@@ -760,7 +764,10 @@ impl From<crate::execution_status::ExecutionFailureStatus> for ExecutionError {
             crate::execution_status::ExecutionFailureStatus::ExecutionCancelledDueToRandomnessUnavailable => Self::ExecutionCanceledDueToRandomnessUnavailable,
             crate::execution_status::ExecutionFailureStatus::MoveVectorElemTooBig { value_size, max_scaled_size } => Self::MoveVectorElemTooBig { value_size, max_scaled_size },
             crate::execution_status::ExecutionFailureStatus::MoveRawValueTooBig { value_size, max_scaled_size } => Self::MoveRawValueTooBig { value_size, max_scaled_size },
+<<<<<<< HEAD
             crate::execution_status::ExecutionFailureStatus::InvalidLinkage => Self::InvalidLinkage,
+=======
+>>>>>>> mainnet-v1.49.2-dag
         }
     }
 }
@@ -778,6 +785,7 @@ impl From<crate::execution_status::MoveLocation> for MoveLocation {
         }
     }
 }
+<<<<<<< HEAD
 
 impl From<crate::execution_status::ExecutionStatus> for ExecutionStatus {
     fn from(value: crate::execution_status::ExecutionStatus) -> Self {
@@ -1334,3 +1342,5 @@ impl From<crate::authenticator_state::ActiveJwk> for ActiveJwk {
 //     }
 // }
 // src/object.rs:pub enum ObjectData {
+=======
+>>>>>>> mainnet-v1.49.2-dag

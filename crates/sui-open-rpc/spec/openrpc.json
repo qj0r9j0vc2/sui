@@ -12,7 +12,11 @@
       "name": "Apache-2.0",
       "url": "https://raw.githubusercontent.com/MystenLabs/sui/main/LICENSE"
     },
+<<<<<<< HEAD
     "version": "1.51.0"
+=======
+    "version": "1.49.2"
+>>>>>>> mainnet-v1.49.2-dag
   },
   "methods": [
     {
@@ -1294,7 +1298,11 @@
             "name": "Result",
             "value": {
               "minSupportedProtocolVersion": "1",
+<<<<<<< HEAD
               "maxSupportedProtocolVersion": "86",
+=======
+              "maxSupportedProtocolVersion": "84",
+>>>>>>> mainnet-v1.49.2-dag
               "protocolVersion": "6",
               "featureFlags": {
                 "accept_passkey_in_multisig": false,
@@ -1378,7 +1386,6 @@
                 "soft_bundle": false,
                 "throughput_aware_consensus_submission": false,
                 "txn_base_cost_as_multiplier": false,
-                "type_tags_in_object_runtime": false,
                 "uncompressed_g1_group_elements": false,
                 "upgraded_multisig_supported": false,
                 "validate_identifier_inputs": false,

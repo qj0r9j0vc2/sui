@@ -571,6 +571,7 @@ impl From<sui_sdk_types::Owner> for super::Owner {
                 OwnerKind::Shared
             }
             Immutable => OwnerKind::Immutable,
+<<<<<<< HEAD
             ConsensusAddress {
                 start_version,
                 owner,
@@ -579,6 +580,9 @@ impl From<sui_sdk_types::Owner> for super::Owner {
                 message.address = Some(owner.to_string());
                 OwnerKind::ConsensusAddress
             }
+=======
+            ConsensusAddress { .. } => todo!(),
+>>>>>>> mainnet-v1.49.2-dag
         };
 
         message.set_kind(kind);

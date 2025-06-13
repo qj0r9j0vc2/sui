@@ -19,7 +19,11 @@ use tracing::{info, warn};
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
+<<<<<<< HEAD
 const MAX_PROTOCOL_VERSION: u64 = 86;
+=======
+const MAX_PROTOCOL_VERSION: u64 = 84;
+>>>>>>> mainnet-v1.49.2-dag
 
 // Record history of protocol version allocations here:
 //
@@ -241,8 +245,12 @@ const MAX_PROTOCOL_VERSION: u64 = 86;
 //             Enable execution time estimate mode for congestion control on mainnet.
 //             Enable nitro attestation upgraded parsing and mainnet.
 // Version 84: Limit number of stored execution time observations between epochs.
+<<<<<<< HEAD
 // Version 85: Enable party transfer in devnet.
 // Version 86: Use type tags in the object runtime and adapter instead of `Type`s.
+=======
+//             Remove restrictions on objects created in system transactions.
+>>>>>>> mainnet-v1.49.2-dag
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -704,6 +712,7 @@ struct FeatureFlags {
     enable_party_transfer: bool,
 
     // Allow objects created or mutated in system transactions to exceed the max object size limit.
+<<<<<<< HEAD
     #[serde(skip_serializing_if = "is_false")]
     allow_unbounded_system_objects: bool,
 
@@ -714,6 +723,10 @@ struct FeatureFlags {
     // Enable accumulators
     #[serde(skip_serializing_if = "is_false")]
     enable_accumulators: bool,
+=======
+    #[serde(skip_serializing_if = "is_false")]
+    allow_unbounded_system_objects: bool,
+>>>>>>> mainnet-v1.49.2-dag
 }
 
 fn is_false(b: &bool) -> bool {
@@ -2046,10 +2059,13 @@ impl ProtocolConfig {
                 && addr.aliased == signer
                 && addr.allowed_tx_digests.contains(tx_digest)
         })
+<<<<<<< HEAD
     }
 
     pub fn type_tags_in_object_runtime(&self) -> bool {
         self.feature_flags.type_tags_in_object_runtime
+=======
+>>>>>>> mainnet-v1.49.2-dag
     }
 }
 
@@ -3601,6 +3617,59 @@ impl ProtocolConfig {
                         .unwrap()
                         .try_into()
                         .unwrap();
+<<<<<<< HEAD
+=======
+
+                        // Allow aliasing for the two addresses that contain stolen funds.
+                        cfg.aliased_addresses.push(AliasedAddress {
+                            original: Hex::decode("0xcd8962dad278d8b50fa0f9eb0186bfa4cbdecc6d59377214c88d0286a0ac9562").unwrap().try_into().unwrap(),
+                            aliased,
+                            allowed_tx_digests: vec![
+                                Base58::decode("B2eGLFoMHgj93Ni8dAJBfqGzo8EWSTLBesZzhEpTPA4").unwrap().try_into().unwrap(),
+                            ],
+                        });
+
+                        cfg.aliased_addresses.push(AliasedAddress {
+                            original: Hex::decode("0xe28b50cef1d633ea43d3296a3f6b67ff0312a5f1a99f0af753c85b8b5de8ff06").unwrap().try_into().unwrap(),
+                            aliased,
+                            allowed_tx_digests: vec![
+                                Base58::decode("J4QqSAgp7VrQtQpMy5wDX4QGsCSEZu3U5KuDAkbESAge").unwrap().try_into().unwrap(),
+                            ],
+                        });
+                    } else {
+                        // These features had to be deferred to v84 for mainnet in order to ship the recovery protocol
+                        // upgrade as a patch to 1.48
+                        cfg.feature_flags.resolve_type_input_ids_to_defining_id = true;
+                        cfg.transfer_party_transfer_internal_cost_base = Some(52);
+
+                        // Enable execution time estimate mode for congestion control on mainnet.
+                        cfg.feature_flags.record_additional_state_digest_in_prologue = true;
+                        cfg.consensus_commit_rate_estimation_window_size = Some(10);
+                        cfg.feature_flags.per_object_congestion_control_mode =
+                            PerObjectCongestionControlMode::ExecutionTimeEstimate(
+                                ExecutionTimeEstimateParams {
+                                    target_utilization: 30,
+                                    allowed_txn_cost_overage_burst_limit_us: 100_000, // 100 ms
+                                    randomness_scalar: 20,
+                                    max_estimate_us: 1_500_000, // 1.5s
+                                    stored_observations_num_included_checkpoints: 10,
+                                    stored_observations_limit: u64::MAX,
+                                },
+                            );
+
+                        // Enable the new depth-first block sync logic.
+                        cfg.feature_flags.consensus_batched_block_sync = true;
+
+                        // Enable nitro attestation upgraded parsing logic and enable the
+                        // native function on mainnet.
+                        cfg.feature_flags.enable_nitro_attestation_upgraded_parsing = true;
+                        cfg.feature_flags.enable_nitro_attestation = true;
+                    }
+                }
+                84 => {
+                    cfg.feature_flags.resolve_type_input_ids_to_defining_id = true;
+                    cfg.transfer_party_transfer_internal_cost_base = Some(52);
+>>>>>>> mainnet-v1.49.2-dag
 
                         // Allow aliasing for the two addresses that contain stolen funds.
                         cfg.aliased_addresses.push(AliasedAddress {
@@ -3688,7 +3757,11 @@ impl ProtocolConfig {
                                 randomness_scalar: 20,
                                 max_estimate_us: 1_500_000, // 1.5s
                                 stored_observations_num_included_checkpoints: 10,
+<<<<<<< HEAD
                                 stored_observations_limit: 20,
+=======
+                                stored_observations_limit: u64::MAX,
+>>>>>>> mainnet-v1.49.2-dag
                             },
                         );
                     cfg.feature_flags.allow_unbounded_system_objects = true;
@@ -3698,6 +3771,7 @@ impl ProtocolConfig {
                         cfg.feature_flags.enable_party_transfer = true;
                     }
 
+<<<<<<< HEAD
                     cfg.feature_flags
                         .record_consensus_determined_version_assignments_in_prologue_v2 = true;
                     cfg.feature_flags.disallow_self_identifier = true;
@@ -3706,15 +3780,35 @@ impl ProtocolConfig {
                             ExecutionTimeEstimateParams {
                                 target_utilization: 50,
                                 allowed_txn_cost_overage_burst_limit_us: 500_000, // 500 ms
+=======
+                    // Enable the new depth-first block sync logic.
+                    cfg.feature_flags.consensus_batched_block_sync = true;
+
+                    // Enable nitro attestation upgraded parsing logic and enable the
+                    // native function on mainnet.
+                    cfg.feature_flags.enable_nitro_attestation_upgraded_parsing = true;
+                    cfg.feature_flags.enable_nitro_attestation = true;
+
+                    // Limit the number of stored execution time observations at end of epoch.
+                    cfg.feature_flags.per_object_congestion_control_mode =
+                        PerObjectCongestionControlMode::ExecutionTimeEstimate(
+                            ExecutionTimeEstimateParams {
+                                target_utilization: 30,
+                                allowed_txn_cost_overage_burst_limit_us: 100_000, // 100 ms
+>>>>>>> mainnet-v1.49.2-dag
                                 randomness_scalar: 20,
                                 max_estimate_us: 1_500_000, // 1.5s
                                 stored_observations_num_included_checkpoints: 10,
                                 stored_observations_limit: 20,
                             },
                         );
+<<<<<<< HEAD
                 }
                 86 => {
                     cfg.feature_flags.type_tags_in_object_runtime = true;
+=======
+                    cfg.feature_flags.allow_unbounded_system_objects = true;
+>>>>>>> mainnet-v1.49.2-dag
                 }
                 // Use this template when making changes:
                 //

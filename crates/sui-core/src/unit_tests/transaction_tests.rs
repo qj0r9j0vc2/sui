@@ -16,6 +16,10 @@ use sui_types::crypto::{PublicKey, SuiSignature, ToFromBytes, ZkLoginPublicIdent
 use sui_types::messages_grpc::{
     HandleCertificateResponseV2, HandleSoftBundleCertificatesRequestV3,
 };
+<<<<<<< HEAD
+=======
+use sui_types::object::Authenticator;
+>>>>>>> mainnet-v1.49.2-dag
 use sui_types::utils::get_one_zklogin_inputs;
 use sui_types::{
     authenticator_state::ActiveJwk,
