@@ -13,12 +13,12 @@ use crate::{with_tracing, SuiRpcModule, error::Error};
 
 #[derive(Clone)]
 pub struct DagReadApi {
-    dag_state: Arc<RwLock<DagState>>, 
+    dag_state: Option<Arc<RwLock<DagState>>>,
     _metrics: Arc<JsonRpcMetrics>,
 }
 
 impl DagReadApi {
-    pub fn new(dag_state: Arc<RwLock<DagState>>, metrics: Arc<JsonRpcMetrics>) -> Self {
+    pub fn new(dag_state: Option<Arc<RwLock<DagState>>>, metrics: Arc<JsonRpcMetrics>) -> Self {
         Self { dag_state, _metrics: metrics }
     }
 }
@@ -27,8 +27,11 @@ impl DagReadApi {
 impl DagReadApiServer for DagReadApi {
     async fn get_latest_dag_blocks(&self, num_rounds: Option<u64>) -> RpcResult<Vec<SuiDagBlock>> {
         with_tracing!(async move {
+            let Some(ds) = &self.dag_state else {
+                return Err(Error::UnsupportedFeature("DAG state unavailable".to_string()).into());
+            };
             let num_rounds = num_rounds.unwrap_or(5);
-            let ds = self.dag_state.read();
+            let ds = ds.read();
             let highest = ds.highest_accepted_round();
             let start = highest.saturating_sub(num_rounds as u32);
             let mut blocks = Vec::new();

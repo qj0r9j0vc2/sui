@@ -15,7 +15,8 @@ use tokio_util::sync::CancellationToken;
 use tracing::warn;
 
 use sui_json_rpc::ServerType;
-use sui_json_rpc::{JsonRpcServerBuilder, ServerHandle};
+use sui_json_rpc::{JsonRpcServerBuilder, ServerHandle, dag_api::DagReadApi};
+use sui_json_rpc_api::{JsonRpcMetrics};
 use sui_json_rpc_api::CLIENT_SDK_TYPE_HEADER;
 
 use crate::apis::{
@@ -63,6 +64,7 @@ pub async fn build_json_rpc_server(
     builder.register_module(ReadApi::new(reader.clone()))?;
     builder.register_module(CoinReadApi::new(reader.clone()))?;
     builder.register_module(ExtendedApi::new(reader.clone()))?;
+    builder.register_module(DagReadApi::new(None, JsonRpcMetrics::new(prometheus_registry).into()))?;
 
     let system_package_task =
         SystemPackageTask::new(reader.clone(), cancel.clone(), Duration::from_secs(10));

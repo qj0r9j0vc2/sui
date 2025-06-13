@@ -113,6 +113,7 @@ use sui_json_rpc::governance_api::GovernanceReadApi;
 use sui_json_rpc::indexer_api::IndexerApi;
 use sui_json_rpc::move_utils::MoveUtils;
 use sui_json_rpc::read_api::ReadApi;
+use sui_json_rpc::dag_api::DagReadApi;
 use sui_json_rpc::transaction_builder_api::TransactionBuilderApi;
 use sui_json_rpc::transaction_execution_api::TransactionExecutionApi;
 use sui_json_rpc::JsonRpcServerBuilder;
@@ -2282,10 +2283,11 @@ async fn build_http_servers(
             ReadApi::new(state.clone(), kv_store.clone(), metrics.clone()),
             kv_store,
             name_service_config,
-            metrics,
+            metrics.clone(),
             config.indexer_max_subscriptions,
         ))?;
         server.register_module(MoveUtils::new(state.clone()))?;
+        server.register_module(DagReadApi::new(None, metrics.clone()))?;
 
         let server_type = config.jsonrpc_server_type();
 
