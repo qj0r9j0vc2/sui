@@ -58,6 +58,8 @@ sui-macros.workspace = true
 sui-transaction-builder.workspace = true
 mysten-metrics.workspace = true
 shared-crypto.workspace = true
+parking_lot.workspace = true
+consensus-core = { path = "../../consensus/core" }
 typed-store-error.workspace = true
 cached.workspace = true
 im.workspace = true

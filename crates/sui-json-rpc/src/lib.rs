@@ -33,6 +33,7 @@ pub mod authority_state;
 mod balance_changes;
 pub mod bridge_api;
 pub mod coin_api;
+pub mod dag_api;
 pub mod error;
 pub mod governance_api;
 pub mod indexer_api;
