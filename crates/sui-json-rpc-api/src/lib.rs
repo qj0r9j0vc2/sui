@@ -20,6 +20,9 @@ pub use indexer::IndexerApiServer;
 pub use move_utils::MoveUtilsClient;
 pub use move_utils::MoveUtilsOpenRpc;
 pub use move_utils::MoveUtilsServer;
+pub use dag::DagReadApiClient;
+pub use dag::DagReadApiOpenRpc;
+pub use dag::DagReadApiServer;
 use once_cell::sync::Lazy;
 use prometheus::register_histogram_with_registry;
 use prometheus::Histogram;
@@ -43,6 +46,7 @@ mod governance;
 mod indexer;
 mod move_utils;
 mod read;
+mod dag;
 mod transaction_builder;
 mod write;
 
