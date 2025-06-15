@@ -488,6 +488,10 @@ where
     pub(crate) fn transaction_client(&self) -> Arc<TransactionClient> {
         self.transaction_client.clone()
     }
+    
+    pub(crate) fn dag_state(&self) -> Arc<RwLock<DagState>> {
+        self.dag_state.clone()
+    }
 
     pub(crate) fn dag_state(&self) -> Arc<RwLock<DagState>> {
         self.dag_state.clone()

@@ -2243,7 +2243,7 @@ async fn build_http_servers(
     let mut router = axum::Router::new();
 
     let dag_api = Arc::new(DagReadApi::new(None, metrics.clone()));
-
+  
     let json_rpc_router = {
         let mut server = JsonRpcServerBuilder::new(
             env!("CARGO_PKG_VERSION"),

@@ -40,4 +40,4 @@ https://github.com/MystenLabs/sui/releases
 * 22-05-05: [0.1.0 (Sui Devnet launch)](https://medium.com/mysten-labs/sui-devnet-public-release-a2be304ff36b)
 
 * 25-06-13: [1.50.1-dag](https://github.com/qj0r9j0vc2/sui/releases/tag/testnet-v1.50.1-dag)
-  * Exposed `getLatestDagBlocks` RPC for retrieving recent consensus DAG blocks
+* Exposed `getLatestDagBlocks` RPC for retrieving recent consensus DAG blocks

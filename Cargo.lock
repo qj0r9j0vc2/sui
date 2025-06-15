@@ -14776,6 +14776,7 @@ dependencies = [
  "bcs",
  "cached",
  "chrono",
+ "consensus-core",
  "expect-test",
  "eyre",
  "fastcrypto",
@@ -14794,6 +14795,7 @@ dependencies = [
  "move-package",
  "mysten-metrics",
  "once_cell",
+ "parking_lot 0.12.3",
  "prometheus",
  "serde",
  "serde_json",
@@ -14829,6 +14831,7 @@ name = "sui-json-rpc-api"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "consensus-core",
  "fastcrypto",
  "jsonrpsee",
  "mysten-metrics",
@@ -14886,8 +14889,10 @@ name = "sui-json-rpc-types"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "base64 0.21.7",
  "bcs",
  "colored",
+ "consensus-core",
  "enum_dispatch",
  "fastcrypto",
  "insta",

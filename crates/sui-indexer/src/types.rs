@@ -27,7 +27,7 @@ use crate::errors::IndexerError;
 
 pub type IndexerResult<T> = Result<T, IndexerError>;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct IndexedCheckpoint {
     // TODO: A lot of fields are now redundant with certified_checkpoint and checkpoint_contents.
     pub sequence_number: u64,
@@ -49,9 +49,10 @@ pub struct IndexedCheckpoint {
     pub end_of_epoch: bool,
     pub min_tx_sequence_number: u64,
     pub max_tx_sequence_number: u64,
-    // FIXME: Remove the Default derive and make these fields mandatory.
-    pub certified_checkpoint: Option<CertifiedCheckpointSummary>,
-    pub checkpoint_contents: Option<CheckpointContents>,
+    /// The certified checkpoint summary for this checkpoint.
+    pub certified_checkpoint: CertifiedCheckpointSummary,
+    /// The full checkpoint contents.
+    pub checkpoint_contents: CheckpointContents,
 }
 
 impl IndexedCheckpoint {
@@ -90,8 +91,8 @@ impl IndexedCheckpoint {
             checkpoint_commitments: checkpoint.checkpoint_commitments.clone(),
             min_tx_sequence_number,
             max_tx_sequence_number,
-            certified_checkpoint: Some(checkpoint.clone()),
-            checkpoint_contents: Some(contents.clone()),
+            certified_checkpoint: checkpoint.clone(),
+            checkpoint_contents: contents.clone(),
         }
     }
 }
