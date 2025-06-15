@@ -893,7 +893,7 @@ impl SuiNode {
             registry_service,
             metrics: sui_node_metrics,
             json_rpc_metrics: rpc_metrics.clone(),
-            
+
             _discovery: discovery_handle,
             _connection_monitor_handle: connection_monitor_handle,
             state_sync_handle,
@@ -2242,9 +2242,8 @@ async fn build_http_servers(
 
     let mut router = axum::Router::new();
 
-    let metrics = Arc::new(JsonRpcMetrics::new(prometheus_registry));
     let dag_api = Arc::new(DagReadApi::new(None, metrics.clone()));
-    
+  
     let json_rpc_router = {
         let mut server = JsonRpcServerBuilder::new(
             env!("CARGO_PKG_VERSION"),

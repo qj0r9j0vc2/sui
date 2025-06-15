@@ -58,7 +58,7 @@ pub static QUERY_MAX_RESULT_LIMIT: Lazy<usize> = Lazy::new(|| {
     read_size_from_env(RPC_QUERY_MAX_RESULT_LIMIT).unwrap_or(DEFAULT_RPC_QUERY_MAX_RESULT_LIMIT)
 });
 
-// TODOD(chris): make this configurable
+// TODO(chris): make this configurable
 pub const QUERY_MAX_RESULT_LIMIT_CHECKPOINTS: usize = 100;
 
 pub fn cap_page_limit(limit: Option<usize>) -> usize {
