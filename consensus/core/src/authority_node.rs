@@ -493,10 +493,6 @@ where
         self.dag_state.clone()
     }
 
-    pub(crate) fn dag_state(&self) -> Arc<RwLock<DagState>> {
-        self.dag_state.clone()
-    }
-
     pub(crate) async fn replay_complete(&self) {
         self.commit_consumer_monitor.replay_complete().await;
     }
