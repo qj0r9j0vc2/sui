@@ -9,6 +9,7 @@ pub(crate) use move_utils::MoveUtilsApi;
 pub(crate) use read_api::ReadApi;
 pub(crate) use transaction_builder_api::TransactionBuilderApi;
 pub(crate) use write_api::WriteApi;
+pub(crate) use dag_api::DagReadApi;
 
 mod coin_api;
 mod extended_api;
@@ -18,3 +19,4 @@ mod move_utils;
 pub mod read_api;
 mod transaction_builder_api;
 mod write_api;
+mod dag_api;
