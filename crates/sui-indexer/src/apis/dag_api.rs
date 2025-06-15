@@ -13,13 +13,13 @@ use sui_open_rpc::Module;
 use crate::errors::client_error_to_error_object;
 
 pub(crate) struct DagReadApi {
-    client: DagReadApiClient<HttpClient>,
+    fullnode: HttpClient,
 }
 
 impl DagReadApi {
     pub fn new(fullnode_client: HttpClient) -> Self {
         Self {
-            client: DagReadApiClient::new(fullnode_client),
+            fullnode: fullnode_client,
         }
     }
 }
@@ -27,7 +27,8 @@ impl DagReadApi {
 #[async_trait]
 impl DagReadApiServer for DagReadApi {
     async fn get_latest_dag_blocks(&self, num_rounds: Option<u64>) -> RpcResult<Vec<SuiDagBlock>> {
-        self.client
+        self
+            .fullnode
             .get_latest_dag_blocks(num_rounds)
             .await
             .map_err(client_error_to_error_object)
