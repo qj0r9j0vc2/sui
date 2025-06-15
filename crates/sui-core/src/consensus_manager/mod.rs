@@ -8,13 +8,14 @@ use crate::consensus_validator::SuiTxValidator;
 use crate::mysticeti_adapter::LazyMysticetiClient;
 use arc_swap::ArcSwapOption;
 use async_trait::async_trait;
-use consensus_core::ConsensusAuthority;
+use consensus_core::{ConsensusAuthority, DagState};
 use enum_dispatch::enum_dispatch;
 use fastcrypto::traits::KeyPair as _;
 use mysten_metrics::{RegistryID, RegistryService};
 use prometheus::{register_int_gauge_with_registry, IntGauge, Registry};
 use std::path::PathBuf;
 use std::sync::Arc;
+use parking_lot::RwLock;
 use std::time::{Duration, Instant};
 use sui_config::{ConsensusConfig, NodeConfig};
 use sui_protocol_config::ProtocolVersion;
@@ -76,6 +77,12 @@ impl ProtocolManager {
             client,
         ))
     }
+
+    fn dag_state(&self) -> Option<Arc<RwLock<DagState>>> {
+        match self {
+            Self::Mysticeti(m) => m.dag_state(),
+        }
+    }
 }
 
 /// Used by Sui validator to start consensus protocol for each epoch.
@@ -116,6 +123,10 @@ impl ConsensusManager {
 
     pub fn get_storage_base_path(&self) -> PathBuf {
         self.consensus_config.db_path().to_path_buf()
+    }
+
+    pub fn dag_state(&self) -> Option<Arc<RwLock<DagState>>> {
+        self.mysticeti_manager.dag_state()
     }
 }
 

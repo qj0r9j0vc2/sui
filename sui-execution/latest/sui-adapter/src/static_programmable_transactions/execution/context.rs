@@ -13,7 +13,8 @@ use crate::{
     execution_mode::ExecutionMode,
     gas_charger::GasCharger,
     gas_meter::SuiGasMeter,
-    programmable_transactions::{context::finish, data_store::SuiDataStore},
+    programmable_transactions::context::finish,
+    data_store::sui_data_store::SuiDataStore,
     sp,
     static_programmable_transactions::{
         better_todo,

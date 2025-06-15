@@ -113,6 +113,7 @@ use sui_json_rpc::governance_api::GovernanceReadApi;
 use sui_json_rpc::indexer_api::IndexerApi;
 use sui_json_rpc::move_utils::MoveUtils;
 use sui_json_rpc::read_api::ReadApi;
+use sui_json_rpc::dag_api::DagReadApi;
 use sui_json_rpc::transaction_builder_api::TransactionBuilderApi;
 use sui_json_rpc::transaction_execution_api::TransactionExecutionApi;
 use sui_json_rpc::JsonRpcServerBuilder;
@@ -244,6 +245,7 @@ pub struct SuiNode {
     transaction_orchestrator: Option<Arc<TransactiondOrchestrator<NetworkAuthorityClient>>>,
     registry_service: RegistryService,
     metrics: Arc<SuiNodeMetrics>,
+    json_rpc_metrics: Arc<JsonRpcMetrics>,
 
     _discovery: discovery::Handle,
     _connection_monitor_handle: consensus_core::ConnectionMonitorHandle,
@@ -277,6 +279,7 @@ pub struct SuiNode {
     auth_agg: Arc<ArcSwap<AuthorityAggregator<NetworkAuthorityClient>>>,
 
     subscription_service_checkpoint_sender: Option<tokio::sync::mpsc::Sender<CheckpointData>>,
+    dag_api: Arc<DagReadApi>,
 }
 
 impl fmt::Debug for SuiNode {
@@ -798,13 +801,15 @@ impl SuiNode {
             None
         };
 
-        let (http_servers, subscription_service_checkpoint_sender) = build_http_servers(
+        let rpc_metrics = JsonRpcMetrics::global(&prometheus_registry);
+        let (http_servers, subscription_service_checkpoint_sender, dag_api) = build_http_servers(
             state.clone(),
             state_sync_store,
             &transaction_orchestrator.clone(),
             &config,
             &prometheus_registry,
             server_version,
+            rpc_metrics.clone(),
         )
         .await?;
 
@@ -860,6 +865,7 @@ impl SuiNode {
                     connection_monitor_status.clone(),
                     &registry_service,
                     sui_node_metrics.clone(),
+                    dag_api.clone(),
                 ),
                 Self::reexecute_pending_consensus_certs(&epoch_store, &state,)
             );
@@ -886,6 +892,7 @@ impl SuiNode {
             transaction_orchestrator,
             registry_service,
             metrics: sui_node_metrics,
+            json_rpc_metrics: rpc_metrics.clone(),
 
             _discovery: discovery_handle,
             _connection_monitor_handle: connection_monitor_handle,
@@ -908,6 +915,7 @@ impl SuiNode {
 
             auth_agg,
             subscription_service_checkpoint_sender,
+            dag_api: dag_api.clone(),
         };
 
         info!("SuiNode started!");
@@ -1218,6 +1226,7 @@ impl SuiNode {
         connection_monitor_status: Arc<ConnectionMonitorStatus>,
         registry_service: &RegistryService,
         sui_node_metrics: Arc<SuiNodeMetrics>,
+        dag_api: Arc<DagReadApi>,
     ) -> Result<ValidatorComponents> {
         let mut config_clone = config.clone();
         let consensus_config = config_clone
@@ -1294,6 +1303,7 @@ impl SuiNode {
             checkpoint_metrics,
             sui_node_metrics,
             sui_tx_validator_metrics,
+            dag_api.clone(),
         )
         .await
     }
@@ -1315,6 +1325,7 @@ impl SuiNode {
         checkpoint_metrics: Arc<CheckpointMetrics>,
         sui_node_metrics: Arc<SuiNodeMetrics>,
         sui_tx_validator_metrics: Arc<SuiTxValidatorMetrics>,
+        dag_api: Arc<DagReadApi>,
     ) -> Result<ValidatorComponents> {
         let checkpoint_service = Self::build_checkpoint_service(
             config,
@@ -1397,6 +1408,9 @@ impl SuiNode {
                 ),
             )
             .await;
+        if let Some(ds) = consensus_manager.dag_state() {
+            dag_api.set_dag_state(ds);
+        }
         let consensus_replay_waiter = consensus_manager.replay_waiter();
 
         if !epoch_store
@@ -1930,6 +1944,7 @@ impl SuiNode {
                             checkpoint_metrics,
                             self.metrics.clone(),
                             sui_tx_validator_metrics,
+                            self.dag_api.clone(),
                         )
                         .await?,
                     )
@@ -1966,6 +1981,7 @@ impl SuiNode {
                         self.connection_monitor_status.clone(),
                         &self.registry_service,
                         self.metrics.clone(),
+                        self.dag_api.clone(),
                     )
                     .await?;
 
@@ -2209,16 +2225,24 @@ async fn build_http_servers(
     config: &NodeConfig,
     prometheus_registry: &Registry,
     server_version: ServerVersion,
+    metrics: Arc<JsonRpcMetrics>,
 ) -> Result<(
     HttpServers,
     Option<tokio::sync::mpsc::Sender<CheckpointData>>,
+    Arc<DagReadApi>,
 )> {
     // Validators do not expose these APIs
     if config.consensus_config().is_some() {
-        return Ok((HttpServers::default(), None));
+        return Ok((
+            HttpServers::default(),
+            None,
+            Arc::new(DagReadApi::new(None, metrics.clone())),
+        ));
     }
 
     let mut router = axum::Router::new();
+
+    let dag_api = Arc::new(DagReadApi::new(None, metrics.clone()));
 
     let json_rpc_router = {
         let mut server = JsonRpcServerBuilder::new(
@@ -2230,7 +2254,6 @@ async fn build_http_servers(
 
         let kv_store = build_kv_store(&state, config, prometheus_registry)?;
 
-        let metrics = Arc::new(JsonRpcMetrics::new(prometheus_registry));
         server.register_module(ReadApi::new(
             state.clone(),
             kv_store.clone(),
@@ -2282,10 +2305,11 @@ async fn build_http_servers(
             ReadApi::new(state.clone(), kv_store.clone(), metrics.clone()),
             kv_store,
             name_service_config,
-            metrics,
+            metrics.clone(),
             config.indexer_max_subscriptions,
         ))?;
         server.register_module(MoveUtils::new(state.clone()))?;
+        server.register_module((*dag_api).clone())?;
 
         let server_type = config.jsonrpc_server_type();
 
@@ -2370,6 +2394,7 @@ async fn build_http_servers(
             https,
         },
         Some(subscription_service_checkpoint_sender),
+        dag_api,
     ))
 }
 

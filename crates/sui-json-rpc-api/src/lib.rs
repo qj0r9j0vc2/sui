@@ -20,7 +20,11 @@ pub use indexer::IndexerApiServer;
 pub use move_utils::MoveUtilsClient;
 pub use move_utils::MoveUtilsOpenRpc;
 pub use move_utils::MoveUtilsServer;
-use once_cell::sync::Lazy;
+pub use dag::DagReadApiClient;
+pub use dag::DagReadApiOpenRpc;
+pub use dag::DagReadApiServer;
+use once_cell::sync::{Lazy, OnceCell};
+use std::sync::Arc;
 use prometheus::register_histogram_with_registry;
 use prometheus::Histogram;
 use prometheus::{register_int_counter_with_registry, IntCounter};
@@ -43,6 +47,7 @@ mod governance;
 mod indexer;
 mod move_utils;
 mod read;
+mod dag;
 mod transaction_builder;
 mod write;
 
@@ -53,7 +58,7 @@ pub static QUERY_MAX_RESULT_LIMIT: Lazy<usize> = Lazy::new(|| {
     read_size_from_env(RPC_QUERY_MAX_RESULT_LIMIT).unwrap_or(DEFAULT_RPC_QUERY_MAX_RESULT_LIMIT)
 });
 
-// TODOD(chris): make this configurable
+// TODO(chris): make this configurable
 pub const QUERY_MAX_RESULT_LIMIT_CHECKPOINTS: usize = 100;
 
 pub fn cap_page_limit(limit: Option<usize>) -> usize {
@@ -321,6 +326,19 @@ impl JsonRpcMetrics {
     pub fn new_for_tests() -> Self {
         let registry = prometheus::Registry::new();
         Self::new(&registry)
+    }
+}
+
+static GLOBAL_METRICS: OnceCell<Arc<JsonRpcMetrics>> = OnceCell::new();
+
+impl JsonRpcMetrics {
+    /// Return a shared [`JsonRpcMetrics`] instance registered with the given registry.
+    /// Subsequent calls will reuse the initially created metrics to avoid
+    /// `AlreadyReg` errors from Prometheus.
+    pub fn global(registry: &prometheus::Registry) -> Arc<Self> {
+        GLOBAL_METRICS
+            .get_or_init(|| Arc::new(Self::new(registry)))
+            .clone()
     }
 }
 
