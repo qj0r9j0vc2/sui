@@ -23,7 +23,11 @@ pub use move_utils::MoveUtilsServer;
 pub use dag::DagReadApiClient;
 pub use dag::DagReadApiOpenRpc;
 pub use dag::DagReadApiServer;
-use once_cell::sync::Lazy;
+pub use dag::DagReadApiClient;
+pub use dag::DagReadApiOpenRpc;
+pub use dag::DagReadApiServer;
+use once_cell::sync::{Lazy, OnceCell};
+use std::sync::Arc;
 use prometheus::register_histogram_with_registry;
 use prometheus::Histogram;
 use prometheus::{register_int_counter_with_registry, IntCounter};
@@ -325,6 +329,19 @@ impl JsonRpcMetrics {
     pub fn new_for_tests() -> Self {
         let registry = prometheus::Registry::new();
         Self::new(&registry)
+    }
+}
+
+static GLOBAL_METRICS: OnceCell<Arc<JsonRpcMetrics>> = OnceCell::new();
+
+impl JsonRpcMetrics {
+    /// Return a shared [`JsonRpcMetrics`] instance registered with the given registry.
+    /// Subsequent calls will reuse the initially created metrics to avoid
+    /// `AlreadyReg` errors from Prometheus.
+    pub fn global(registry: &prometheus::Registry) -> Arc<Self> {
+        GLOBAL_METRICS
+            .get_or_init(|| Arc::new(Self::new(registry)))
+            .clone()
     }
 }
 

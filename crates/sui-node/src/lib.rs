@@ -245,6 +245,7 @@ pub struct SuiNode {
     transaction_orchestrator: Option<Arc<TransactiondOrchestrator<NetworkAuthorityClient>>>,
     registry_service: RegistryService,
     metrics: Arc<SuiNodeMetrics>,
+    json_rpc_metrics: Arc<JsonRpcMetrics>,
 
     _discovery: discovery::Handle,
     _connection_monitor_handle: consensus_core::ConnectionMonitorHandle,
@@ -800,6 +801,7 @@ impl SuiNode {
             None
         };
 
+        let rpc_metrics = JsonRpcMetrics::global(&prometheus_registry);
         let (http_servers, subscription_service_checkpoint_sender, dag_api) = build_http_servers(
             state.clone(),
             state_sync_store,
@@ -807,6 +809,7 @@ impl SuiNode {
             &config,
             &prometheus_registry,
             server_version,
+            rpc_metrics.clone(),
         )
         .await?;
 
@@ -889,7 +892,8 @@ impl SuiNode {
             transaction_orchestrator,
             registry_service,
             metrics: sui_node_metrics,
-
+            json_rpc_metrics: rpc_metrics.clone(),
+            
             _discovery: discovery_handle,
             _connection_monitor_handle: connection_monitor_handle,
             state_sync_handle,
@@ -2221,6 +2225,7 @@ async fn build_http_servers(
     config: &NodeConfig,
     prometheus_registry: &Registry,
     server_version: ServerVersion,
+    metrics: Arc<JsonRpcMetrics>,
 ) -> Result<(
     HttpServers,
     Option<tokio::sync::mpsc::Sender<CheckpointData>>,
@@ -2228,7 +2233,11 @@ async fn build_http_servers(
 )> {
     // Validators do not expose these APIs
     if config.consensus_config().is_some() {
-        return Ok((HttpServers::default(), None, Arc::new(DagReadApi::new(None, Arc::new(JsonRpcMetrics::new(prometheus_registry))))));
+        return Ok((
+            HttpServers::default(),
+            None,
+            Arc::new(DagReadApi::new(None, metrics.clone())),
+        ));
     }
 
     let mut router = axum::Router::new();
@@ -2246,7 +2255,6 @@ async fn build_http_servers(
 
         let kv_store = build_kv_store(&state, config, prometheus_registry)?;
 
-        let metrics = Arc::new(JsonRpcMetrics::new(prometheus_registry));
         server.register_module(ReadApi::new(
             state.clone(),
             kv_store.clone(),
